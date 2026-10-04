@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mundo Agora — 4 de outubro de 2026</title>
+<style>
+:root{--bg:#f6f7fb;--ink:#161a2b;--mut:#5d6580;--card:#fff;--line:#dfe2ee;--brand:#1c2a6b}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1220;--ink:#e9ebf5;--mut:#9aa2c0;--card:#181c30;--line:#2a3050;--brand:#8fa2ff}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:var(--brand);color:#fff;padding:14px 16px 0}
+@media(prefers-color-scheme:dark){header{background:#1a2150}}
+.w{max-width:1180px;margin:auto}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;justify-content:space-between}
+h1{margin:0;font:700 1.9rem/1.1 Georgia,serif}
+.date{font-size:.85rem;opacity:.8}
+.tools{display:flex;gap:8px;margin:10px 0}
+input{flex:1;min-width:0;padding:9px 12px;border-radius:8px;border:0;font:inherit;background:rgba(255,255,255,.95);color:#161a2b}
+nav{display:flex;gap:4px;overflow-x:auto;padding-top:4px}
+nav button{white-space:nowrap;background:none;border:0;color:#fff;font:600 .9rem system-ui;padding:10px 12px;cursor:pointer;border-bottom:3px solid transparent;opacity:.8}
+nav button.on{opacity:1;border-color:#fff}
+main{padding:18px 16px}
+.hero{display:grid;gap:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:22px}
+@media(min-width:760px){.hero{grid-template-columns:1.3fr 1fr}}
+.hero .ph{min-height:240px}
+.hero .tx{padding:20px}
+.hero h2{font:700 1.7rem/1.2 Georgia,serif;margin:6px 0 10px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.ph{background:var(--line) center/cover no-repeat;height:170px}
+.card .tx{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.tag{font:700 .75rem system-ui;color:#fff;background:var(--c);padding:2px 9px;border-radius:99px;align-self:flex-start}
+h3{margin:0;font:700 1.1rem/1.3 Georgia,serif}
+p{margin:0;color:var(--mut);font-size:.92rem}
+a{color:inherit}
+.src{margin-top:auto;font-size:.8rem;color:var(--mut)}
+.src a{color:var(--brand);font-weight:600}
+h3 a,h2 a{text-decoration:none}h3 a:hover,h2 a:hover{text-decoration:underline}
+.more{margin-top:auto;display:inline-block;align-self:flex-start;background:var(--brand);color:#fff;text-decoration:none;font:600 .85rem system-ui;padding:8px 12px;border-radius:8px}
+@media(prefers-color-scheme:dark){.more{color:#0f1220}}
+.hero .more{margin-top:14px}
+.ph{position:relative}
+.card .ph::after,.hero .ph::after{content:"Foto ilustrativa · Wikimedia Commons";position:absolute;left:0;bottom:0;right:0;padding:3px 8px;font:.68rem system-ui;color:#fff;background:rgba(0,0,0,.55)}
+#warn{display:none;background:#fff3cd;color:#5c4400;padding:10px 16px;font:.9rem system-ui}
+h4{font:700 1.3rem Georgia,serif;margin:26px 0 12px}
+.gal{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+.gal figure{margin:0;border-radius:10px;overflow:hidden;position:relative}
+.gal .ph{height:150px}
+.gal figcaption{position:absolute;left:0;right:0;bottom:0;padding:6px 8px;color:#fff;font-size:.8rem;background:linear-gradient(transparent,rgba(0,0,0,.75))}
+footer{padding:24px 16px 40px;text-align:center;color:var(--mut);font-size:.82rem}
+</style>
+</head>
+<body>
+<header><div class="w">
+ <div class="bar"><h1>Mundo Agora</h1><span class="date">Domingo, 4 de outubro de 2026</span></div>
+ <div class="tools"><input id="q" type="search" placeholder="Pesquisar notícias…" aria-label="Pesquisar"></div>
+ <nav id="nav"></nav>
+</div></header>
+<div id="warn" role="alert">As fotos não carregaram. Abre este ficheiro no navegador (Chrome ou Safari) com internet, ou publica o site; a pré-visualização da app bloqueia ligações externas.</div>
+<main class="w" id="main"></main>
+<footer>Notícias reais de 1 a 4 de outubro de 2026, resumidas com as nossas palavras. Toca num título ou no botão para ler a notícia completa no site da fonte. Fotos reais da Wikipédia/Wikimedia Commons, usadas como ilustração do tema.</footer>
+
+<script>
+const CATS={mundo:["Mundo","#c0392b"],futebol:["Futebol","#1e8449"],agro:["Agricultura","#7d8a1c"],tech:["Tecnologia","#2f55d4"],misterio:["Mistério","#7b3fa8"],submerso:["Mundo submerso","#0b6c9c"],aquatica:["Vida aquática","#0f8b8d"],animais:["Animais","#c26a00"]};
+/* [categoria, título, resumo, fonte, link, tema da foto na Wikipédia] */
+const P=[
+["mundo","Merz faz visita-surpresa a Kiev e promete mais apoio à Ucrânia","O chanceler alemão viajou à capital ucraniana com a ministra da Economia e representantes da indústria de defesa e energia para anunciar mais ajuda militar e financeira.","Euronews","https://www.euronews.com/","Kyiv"],
+["mundo","Partido pró-europeu no poder vence eleições legislativas na Letónia","O partido que governa o país báltico saiu vencedor do voto deste domingo, segundo a cobertura da Euronews.","Euronews","https://www.euronews.com/","Riga"],
+["mundo","Brasil vai às urnas no primeiro turno das eleições","Mesários montaram as urnas eletrónicas nas escolas públicas de todo o país, a 30 anos da introdução do voto eletrónico.","Agência Brasil","https://agenciabrasil.ebc.com.br/","Electronic voting in Brazil|Brazil"],
+["mundo","ONU debate como limitar a ultrapassagem do limite de 1,5 °C","Líderes reúnem-se para discutir como tornar curta e temporária a subida acima da meta dos acordos climáticos internacionais.","ONU News","https://news.un.org/pt/news","Global warming|Climate change"],
+["futebol","Espanha vence a Chéquia por 2–0 e Suíça bate a Eslovénia por 2–1","Entre os resultados da jornada de seleções, a Islândia goleou a Bulgária por 3–0 e a Bielorrússia a San Marino por 4–0.","Maisfutebol","https://maisfutebol.iol.pt/resultadoseclassificacoes","Spain national football team"],
+["futebol","Domingo de Liga das Nações: Grécia–Alemanha, Holanda–Sérvia e Portugal em campo","A jornada inclui também Kosovo–Áustria, com jogos a partir das 13h00 (hora de Brasília).","CNN Brasil","https://www.cnnbrasil.com.br/","UEFA Nations League|UEFA"],
+["futebol","Espanha tem a maior sequência invicta de uma seleção masculina","A FIFA destaca o recorde espanhol no balanço dos momentos do Mundial 2026.","FIFA","https://www.fifa.com/pt/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures","2026 FIFA World Cup|FIFA World Cup"],
+["agro","Acordo Internacional do Cacau 2026 entra em vigor","Em vigor desde 1 de outubro, liga a estabilidade de preços e a sustentabilidade a preços justos para os produtores.","IndexBox","https://www.indexbox.io/blog/international-cocoa-agreement-2026-enters-into-force-on-1-october/","Cocoa bean"],
+["agro","Soja: Paranaguá a 523,97 US$/t, Golfo dos EUA a 517,72 US$/t","Preços semanais de exportação da Comissão Europeia mostram também a soja argentina a 503,02 e a ucraniana a 450 dólares por tonelada.","IndexBox","https://www.indexbox.io/pt-br/blog/branch/agriculture/?page=8","Soybean"],
+["agro","Fim do vazio sanitário abre janela de semeadura da safra 2026/27","Nas áreas de sequeiro, produtores aproveitam o início do novo ciclo agrícola.","Canal Rural","https://www.canalrural.com.br/","Sowing|Soybean"],
+["agro","Biocombustíveis somam R$ 289 mil milhões em investimentos registados no Brasil","O setor expande-se para aviação, transporte marítimo e produção de biometano.","Correio Central","https://correiocentral.com.br/noticia/biocombustiveis-ja-somam-r-289-bilhoes-em-investimentos-registrados-no-brasil","Biofuel|Ethanol fuel"],
+["tech","Google liberta o Gemini 4 Argon primeiro para defensores cibernéticos","O novo modelo chega antes de tudo a equipas de segurança.","Daily Journal","https://dailyjournalnews.substack.com/p/tech-bem-vindoa-a-1-de-outubro-de","Googleplex|Google"],
+["tech","Califórnia intima a OpenAI por riscos de cibersegurança","A notícia surge no mesmo dia em que a OpenAI demitiu três investigadores por partilha de informação confidencial.","Daily Journal","https://dailyjournalnews.substack.com/p/tech-bem-vindoa-a-2-de-outubro-de","OpenAI|Sam Altman"],
+["tech","Juiz federal rejeita ações de editoras contra os AI Overviews do Google","Segundo o resumo da Tech Startups, a decisão fecha a porta aos processos das publicações.","Tech Startups","https://techstartups.com/2026/10/02/top-tech-news-today-october-2-2026-amazon-cloudflare-google-microsoft-suno-tesla-more/","Server room|Artificial intelligence"],
+["tech","Amazon anuncia novos Kindle mais finos e com mais cores","Os modelos de 2026 trazem ecrã nivelado com a moldura.","Estadão","https://news.google.com/","Amazon Kindle"],
+["misterio","Fragmento da Ilíada encontrado dentro de uma múmia de 1.600 anos","A descoberta em Oxirrinco, no Egito greco-romano, junta literatura e rituais funerários.","Aventuras na História","https://aventurasnahistoria.com.br/noticias/reportagem/as-5-maiores-descobertas-arqueologicas-de-2026-feitas-ate-agora.phtml","Oxyrhynchus"],
+["misterio","Figura vista no Google Earth intriga cientistas nos Andes","Um alpinista identificou o local em Mendoza; a arqueóloga Cristina Prieto-Olavarría diz que não há outro igual.","Symplexia","https://news.symplexia.com/pt-br/2026/10/tecnologia-inovacao/tecnologia/figura-vista-no-google-earth-leva-cientistas-a-desvendar-misterio-nos-andes/","Mendoza Province"],
+["misterio","Uma mulher governou o Egito há 5.000 anos?","Análise digital de uma fotografia de 72 anos pode dar nova pista sobre Meretneith.","Revista Oeste","https://revistaoeste.com/oestegeral/2026/10/03/uma-mulher-governou-o-egito-ha-5-000-anos-fotografia-de-72-anos-de-um-objeto-desaparecido-pode-trazer-uma-nova-pista-sobre-meretneith/","Merneith|Ancient Egypt"],
+["submerso","Mergulhadores encontram estrutura circular e muralha no fundo do lago Van","Na Turquia, o conjunto de blocos de pedra pode fazer parte de um sítio arqueológico muito maior.","Executive Digest","https://executivedigest.sapo.pt/cidade-submersa-com-milhares-de-anos-descoberta-na-turquia-pode-esconder-a-verdade-sobre-a-arca-de-noe/","Lake Van"],
+["submerso","À procura de um naufrágio, a NOAA encontra frigoríficos a 1,5 km de profundidade","No Golfo do México, a equipa viu máquinas de lavar, geladeiras e freezers espalhados pelo fundo.","Aventuras na História","https://aventurasnahistoria.com.br/noticias/historia-hoje/pesquisadores-encontram-cemiterio-de-geladeiras-em-busca-por-naufragio.phtml","Gulf of Mexico"],
+["submerso","Marinha francesa encontra navio do século XVI a 2.500 metros","Batizado Camarat 4, é descrito pelos arqueólogos como uma verdadeira cápsula do tempo.","Gazeta do Povo","https://www.gazetadopovo.com.br/mundo/expedicao-encontra-navio-do-seculo-xvi-escondido-a-2-500-metros-de-profundidade/","Shipwreck|Underwater archaeology"],
+["submerso","Navio de Shackleton, 107 anos no gelo, parece uma cápsula do tempo","O navio ficou submerso na Antártida sem o desgaste biológico esperado.","Olhar Digital","https://olhardigital.com.br/curiosidades/2026/07/07/o-navio-que-ficou-107-anos-no-fundo-da-antartica-e-parece-uma-capsula-do-tempo/","Endurance (1912 ship)"],
+["aquatica","Cientistas encontram 300 buracos gigantes à volta de um naufrágio","Há depressões de até 8 metros de largura e peixes podem estar na origem.","Revista Oeste","https://revistaoeste.com/oestegeral/2026/09/30/cientistas-encontram-300-buracos-gigantes-no-fundo-do-mar-ao-redor-de-um-naufragio-peixes-podem-estar-por-tras-do-fenomeno/","Fish|Marine biology"],
+["aquatica","Mar de Weddell revela-se grande berçário de peixes","Um robô subaquático achou ninhos de peixes durante a busca por um navio naufragado na Antártida.","Revista Oeste","https://revistaoeste.com/oestegeral/2026/03/14/robo-subaquatico-faz-descobertas-surpreendentes-durante-busca-por-navio-naufragado-na-antartida/","Weddell Sea"],
+["aquatica","O peixe-boi da Amazónia pode chegar a 3 metros e 450 kg","É um mamífero de água doce, herbívoro e de temperamento dócil.","Proteção Animal Mundial","https://www.worldanimalprotection.org.br/mais-recente/blogs/calendario-animal-2026-especie-de-cada-mes/","Amazonian manatee"],
+["animais","Nova espécie de felino selvagem descrita após mais de um século","Batizado Leopardus tilcayo, o gato é o primeiro felino selvagem descrito em cerca de 100 anos.","O Povo","https://www.opovo.com.br/noticias/mundo/2026/09/18/cientistas-descobrem-nova-especie-de-felino-selvagem-apos-mais-de-um-seculo.html","Leopardus|Wildcat"],
+["animais","Iguana de Utila entre as 10 espécies em risco destacadas pela Fauna & Flora","Vive só nos manguezais da ilha de Utila, em Honduras, e continua em risco crítico.","Rádio Itatiaia","https://www.itatiaia.com.br/meio-ambiente/especies-ameacadas-fauna-flora-alerta-para-animais-e-plantas-em-risco-em-2026/","Utila spiny-tailed iguana"],
+["animais","Gorila-da-montanha: cerca de 1.004 indivíduos na natureza","Está entre os animais mais raros do planeta em 2026.","Cultura de Algibeira","https://culturadealgibeira.com/2026/06/21/descobre-os-10-animais-mais-raros-do-planeta-em-2026/","Mountain gorilla"],
+["animais","Câmaras apanham o raro dunnart-de-pés-brancos","O pequeno marsupial tem menos de 10 cm e restam estimados menos de 5.000.","Revista Oeste","https://revistaoeste.com/oestegeral/2026/03/14/descoberta-de-animais-raros-capturados-por-cameras-de-vida-selvagem-choca-guardas-florestais-2/","White-footed dunnart|Marsupial"]
+];
+const G=[["Aurora boreal","Aurora"],["Grande Barreira de Coral","Great Barrier Reef"],["Floresta Amazónica","Amazon rainforest"],["Serengeti","Serengeti"],["Monte Evereste","Mount Everest"],["Nebulosa de Orion","Orion Nebula"],["Cataratas do Iguaçu","Iguazu Falls"],["Deserto do Saara","Sahara"]];
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+let cat="todos",term="";
+const store={g(k){try{return localStorage.getItem(k)}catch(e){return null}},s(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+const FB={mundo:"Earth",futebol:"Association football",agro:"Agriculture",tech:"Data center",misterio:"Archaeology",submerso:"Shipwreck",aquatica:"Fish",animais:"Wildlife"};
+async function photo(topics){
+ const k="img2:"+topics, c=store.g(k); if(c) return c;
+ for(const t of topics.split("|")){
+  try{
+   const r=await fetch("https://en.wikipedia.org/api/rest_v1/page/summary/"+encodeURIComponent(t.replace(/ /g,"_")));
+   const d=await r.json(); let u=d.thumbnail&&d.thumbnail.source;
+   if(u&&!/\.svg/i.test(u)){u=u.replace(/\/\d+px-/,"/640px-");store.s(k,u);return u}
+  }catch(e){}
+ }
+ return "";
+}
+function fill(root){
+ const els=[...root.querySelectorAll("[data-p]")];
+ Promise.all(els.map(async el=>{const u=await photo(el.dataset.p);if(u){el.style.backgroundImage=`url("${u}")`;return 1}return 0}))
+  .then(r=>{$("warn").style.display=(r.length&&!r.some(Boolean))?"block":"none"});
+}
+const isHome=u=>{try{const x=new URL(u);return x.pathname.length<=1||/(resultadoseclassificacoes|\/news$|scores-fixtures|branch\/agriculture)/.test(x.pathname)}catch(e){return true}};
+const U=p=>isHome(p[4])?"https://www.google.com/search?tbm=nws&q="+encodeURIComponent(p[1]+" "+p[3]):p[4];
+const tag=c=>`<span class="tag" style="--c:${CATS[c][1]}">${CATS[c][0]}</span>`;
+function card(p){return `<article class="card"><div class="ph" data-p="${esc(p[5]+"|"+FB[p[0]])}" role="img" aria-label="${esc(p[1])}"></div><div class="tx">${tag(p[0])}<h3><a href="${esc(U(p))}" target="_blank" rel="noopener">${esc(p[1])}</a></h3><p>${esc(p[2])}</p><a class="more" href="${esc(U(p))}" target="_blank" rel="noopener">Ler a notícia completa · ${esc(p[3])}</a></div></article>`}
+function render(){
+ const L=P.filter(p=>(cat==="todos"||p[0]===cat)&&(p.join(" ").toLowerCase().includes(term)));
+ let h="";
+ if(L.length){const f=L[0];h+=`<div class="hero"><div class="ph" data-p="${esc(f[5]+"|"+FB[f[0]])}" role="img" aria-label=""></div><div class="tx">${tag(f[0])}<h2><a href="${esc(U(f))}" target="_blank" rel="noopener">${esc(f[1])}</a></h2><p>${esc(f[2])}</p><a class="more" href="${esc(U(f))}" target="_blank" rel="noopener">Ler a notícia completa · ${esc(f[3])}</a></div></div>`;
+  h+=`<div class="grid">${L.slice(1).map(card).join("")}</div>`}
+ else h+=`<p>Nenhuma notícia encontrada.</p>`;
+ if(cat==="todos"&&!term) h+=`<h4>Galeria: o mundo em fotos</h4><div class="gal">${G.map(g=>`<figure><div class="ph" data-p="${esc(g[1]+"|Nature")}" role="img" aria-label="${esc(g[0])}"></div><figcaption>${esc(g[0])}</figcaption></figure>`).join("")}</div>`;
+ $("main").innerHTML=h; fill($("main"));
+}
+function nav(){$("nav").innerHTML=[["todos","Tudo"],...Object.entries(CATS).map(([k,v])=>[k,v[0]])].map(([k,n])=>`<button data-k="${k}" class="${k===cat?"on":""}">${n}</button>`).join("");
+ $("nav").onclick=e=>{const k=e.target.dataset.k; if(k){cat=k;nav();render()}}}
+$("q").oninput=e=>{term=e.target.value.toLowerCase();render()};
+nav();render();
+</script>
+</body>
+</html>
